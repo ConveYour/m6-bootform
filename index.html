@@ -44,20 +44,17 @@
 
   <div id="formcontain" method='POST' class="col-md-6 col-xs-12 my6SocialSignUp offset-md-3" style="background-color: #fff;padding: 22px;">
     <form id="employeeInputForm">
-      <!--REQUIRED. You must have an appkey and token see settings/analytics-->
-      <input type="hidden" name="appkey" value="lOw0WaYKDiuxxKHoTYLx2BbVe4sn3bu9">
-      <input type="hidden" name="token" value="VF4NeYUcLO8knelcwEkpxmeK2Wiq5EHK">
       <div class="form-group">
         <label for="exampleInputEmail1">Employee ID</label>
-        <input type="text" class="form-control" id="EmployeeID" aria-describedby="emailHelp" placeholder="Enter email">
+        <input type="text" class="form-control" name="employee_id" aria-describedby="emailHelp" placeholder="Enter email">
       </div>
       <div class="form-group">
         <label for="firstName">First Name</label>
-        <input type="text" class="form-control" id="firstName" placeholder="First Name">
+        <input type="text" class="form-control" name="first_name" placeholder="First Name">
       </div>
       <div class="form-group">
         <label for="lastName">Last Name</label>
-        <input type="text" class="form-control" id="lastName" placeholder="Last Name">
+        <input type="text" class="form-control" name="last_name" placeholder="Last Name">
       </div>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
@@ -127,16 +124,22 @@ var a = $('#employeeInputForm').submit(function(e) {
     // get all the inputs
     var form = $('#employeeInputForm');
 
-    var employeeID = form[0][2].value;
-    var firstName = form[0][3].value;
-    var  lastName = form[0][4].value;
-    //
-    console.log('Id : '+ employeeID);
-    console.log('firstName : '+ firstName);
-    console.log('lastName : '+ lastName);
+    var data = {
+      $process : 2 
+    };
+
+    form.find(':input').each(function(){
+      data[this.name] = this.value;
+    });
+    
+    console.log(data);
+
+    Conveyour.identify(data.employee_id, data).done(function(data){
+      console.log(data)
+    });
 
     //Show Iframe
-    $('#iframeContainer').show()
+    // $('#iframeContainer').show()
 
     //can retun data.
     return form;
@@ -147,6 +150,29 @@ var a = $('#employeeInputForm').submit(function(e) {
 
 console.log(a);
 </script>
+<script type="text/javascript">
+  (function(g) {
+    var ns, script, first;
+
+    ns = 'Conveyour';
+    g[ns] = g[ns] || {};
+    g[ns].config = {
+      domain: 'developer.conveyour.com',
+      appkey: 'yX7nx8UkyfWBv2PD3V06PdjJwHGI8zc8',
+      token: ''
+    };
+    g[ns].identify = function() { g[ns].q = g[ns].q || []; g[ns].q.push({m: 'identify', as: arguments}); };
+    g[ns].track = function() { g[ns].q = g[ns].q || []; g[ns].q.push({m: 'track', as: arguments}); };
+    script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.async = true;
+    script.src = 'https://conveyour.com/js/cdn/analytics.v1.min.js';
+    first = document.getElementsByTagName('script')[0];
+    first.parentNode.insertBefore(script, first);
+  })(window);
+</script>
+
 
   </body>
 </html>
+ 
